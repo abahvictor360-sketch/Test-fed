@@ -472,6 +472,10 @@ button {
   box-shadow: 0 8px 24px rgba(7, 38, 53, .2);
 }
 .toast[hidden] { display: none; }
+.toast--notice {
+  color: var(--color-ink);
+  background: var(--color-accent-soft);
+}
 
 .toast__action {
   flex-shrink: 0;

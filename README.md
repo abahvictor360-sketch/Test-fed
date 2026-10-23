@@ -20,14 +20,15 @@ That's all. To serve it over HTTP instead (optional):
 npx http-server .     # then open http://localhost:8080
 ```
 
-You need an internet connection to load the API data, Chart.js (cdnjs) and the Manrope font
-(Google Fonts). If the font can't load, the page falls back to the system font.
+You need an internet connection for live API data, Chart.js (cdnjs) and the Manrope font
+(Google Fonts). If the API can't be reached, the dashboard shows a saved copy of the patient data
+(see [Data sources](#data-sources)). If the font can't load, the page uses the system font.
 
 ---
 
 ## Features
 
-| Section | Data shown | Source |
+| Section | Data shown | Field |
 | --- | --- | --- |
 | Patients list | Name, gender, age and photo for every patient; Jessica Taylor highlighted | API |
 | Diagnosis History | Line chart of systolic/diastolic blood pressure for the last 6 months | API `diagnosis_history` |
@@ -37,7 +38,19 @@ You need an internet connection to load the API data, Chart.js (cdnjs) and the M
 | Profile | Photo, date of birth, gender, contact, emergency contact, insurance | API |
 | Lab Results | List of lab reports | API `lab_results` |
 
-None of the patient data is hard-coded.
+---
+
+## Data sources
+
+1. **Live API (primary):** on every page load the dashboard makes a `GET` request to
+   `https://fedskillstest.coalitiontechnologies.workers.dev` with HTTP Basic auth. The credentials are
+   encoded with `btoa`, as the API documentation shows.
+2. **Saved copy (fallback):** `data/patients.js` holds a saved copy of that same API response (all 20
+   patients). It is used only if the live request fails or takes longer than 15 seconds. A notice
+   then says saved data is shown, with a **Retry** button that tries the live API again.
+
+The saved copy is a `.js` file, not `.json`, because browsers block reading local `.json` files when
+`index.html` is opened straight from disk. The fallback logic is `loadPatients()` in `js/api.js`.
 
 ---
 
@@ -65,12 +78,14 @@ index.html                    Page markup and inline SVG icon sprite
 css/styles.css                Design tokens, layout, components, responsive breakpoints
 js/utils.js                   HTML escaping, locale-aware date formatting, level indicators
 js/images.js                  Patient photo fallbacks (preview portraits → placeholder)
-js/api.js                     GET request to the Patient Data API (Basic auth, 15 s timeout)
+js/api.js                     GET request to the Patient Data API (Basic auth, 15 s timeout),
+                              falling back to the saved copy in data/patients.js
 js/blood-pressure-chart.js    Chart.js line chart of the last 6 months of blood pressure
 js/render.js                  Renders each dashboard section from API data
 js/app.js                     Entry point: fetch → select Jessica Taylor → render
 assets/                       Logo, favicon, doctor avatar, placeholder avatar
 assets/fallback/              Gender-matched preview portraits used when API photos fail
+data/patients.js              Saved copy of the API response, used when the API is unreachable
 ```
 
 The scripts are plain files that share one namespace (`window.TechCare`) instead of ES modules, so the
@@ -90,7 +105,8 @@ page also works when `index.html` is opened directly from disk (`file://`).
 
 **Resilience**
 - Shimmer placeholders while the patients list loads.
-- If the API request fails or takes longer than 15 seconds, a message appears with a **Retry** button.
+- If the API request fails or takes longer than 15 seconds, the saved copy of the data is shown, with
+  a notice and a **Retry** button. If there is no saved copy, an error message appears instead.
 - Photo fallbacks as described above.
 - A `<noscript>` message for browsers with JavaScript disabled.
 

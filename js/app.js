@@ -1,5 +1,6 @@
 /**
- * Entry point: fetch patients, pick Jessica Taylor and populate the dashboard.
+ * Entry point: load patients (live API, or the saved copy if it is unreachable),
+ * pick Jessica Taylor and populate the dashboard.
  */
 (function (TechCare) {
   'use strict';
@@ -11,7 +12,7 @@
     main.setAttribute('aria-busy', 'true');
 
     try {
-      const patients = await TechCare.api.fetchPatients();
+      const { patients, source } = await TechCare.api.loadPatients();
       const patient = patients.find((p) => p.name === SELECTED_PATIENT);
 
       if (!patient) {
@@ -30,6 +31,12 @@
         TechCare.render.bloodPressureLegend(latest);
         TechCare.render.vitals(latest);
         TechCare.bloodPressureChart.render(document.getElementById('bp-chart'), history);
+      }
+
+      if (source === 'snapshot') {
+        TechCare.render.notice('Live data is unavailable, so saved patient data is shown.', init);
+      } else {
+        TechCare.render.clearToast();
       }
     } catch (err) {
       console.error(err);

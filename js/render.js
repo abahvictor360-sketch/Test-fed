@@ -111,9 +111,14 @@
       : '<li class="empty">No lab results available.</li>';
   }
 
-  /** Shows an error message with a retry action. */
-  function error(message, onRetry) {
-    const toast = slot('error');
+  /**
+   * Shows a message bar with an optional Retry action.
+   * Errors use role="alert" (announced immediately); notices use role="status".
+   */
+  function showToast(message, onRetry, role) {
+    const toast = slot('toast');
+    toast.setAttribute('role', role);
+    toast.classList.toggle('toast--notice', role === 'status');
     toast.innerHTML = `<span>${escapeHtml(message)}</span>`;
 
     if (onRetry) {
@@ -131,6 +136,18 @@
     toast.hidden = false;
   }
 
+  function error(message, onRetry) {
+    showToast(message, onRetry, 'alert');
+  }
+
+  function notice(message, onRetry) {
+    showToast(message, onRetry, 'status');
+  }
+
+  function clearToast() {
+    slot('toast').hidden = true;
+  }
+
   TechCare.render = {
     patientList,
     bloodPressureLegend,
@@ -139,5 +156,7 @@
     profile,
     labResults,
     error,
+    notice,
+    clearToast,
   };
 })(window.TechCare = window.TechCare || {});

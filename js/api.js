@@ -45,5 +45,22 @@
     return data;
   }
 
-  TechCare.api = { fetchPatients };
+  /**
+   * Loads patients from the live API, falling back to the saved copy in
+   * data/patients.js if the request fails.
+   * @returns {Promise<{patients: Array<object>, source: 'api' | 'snapshot'}>}
+   */
+  async function loadPatients() {
+    try {
+      return { patients: await fetchPatients(), source: 'api' };
+    } catch (err) {
+      const snapshot = TechCare.patientSnapshot;
+      if (!Array.isArray(snapshot)) throw err;
+
+      console.warn('Patient API unavailable, using saved data instead.', err);
+      return { patients: snapshot, source: 'snapshot' };
+    }
+  }
+
+  TechCare.api = { fetchPatients, loadPatients };
 })(window.TechCare = window.TechCare || {});
