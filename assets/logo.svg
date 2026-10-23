@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 211 48">
+  <circle cx="24" cy="24" r="24" fill="#01F0D0"/>
+  <path d="M24 35s-11-6.4-11-13.8A6 6 0 0 1 24 17.8a6 6 0 0 1 11 3.4C35 28.6 24 35 24 35z" fill="#072635"/>
+  <path d="M24 20.5v8M20 24.5h8" stroke="#01F0D0" stroke-width="2.6" stroke-linecap="round"/>
+  <text x="58" y="33" font-family="Manrope, Arial, sans-serif" font-size="25" font-weight="800" fill="#072635">Tech.Care</text>
+</svg>

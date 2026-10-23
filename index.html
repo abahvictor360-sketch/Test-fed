@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Tech.Care patient dashboard">
+  <title>Tech.Care | Patient Dashboard</title>
+
+  <link rel="icon" href="assets/logo-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <!-- Inline SVG sprite: every icon used on the page is referenced with <use href="#icon-..."> -->
+  <svg class="sprite" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <symbol id="icon-home" viewBox="0 0 24 24"><path d="M4 10.5 12 4l8 6.5V20a1 1 0 0 1-1 1h-4.5v-6h-5v6H5a1 1 0 0 1-1-1z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></symbol>
+    <symbol id="icon-group" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.6-3.6 3.2-5.5 6.5-5.5s5.9 1.9 6.5 5.5"/><path d="M15.5 4.8a3.5 3.5 0 0 1 0 6.4M18 14.8c2 .8 3.2 2.5 3.5 5.2"/></g></symbol>
+    <symbol id="icon-calendar" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3.5" y="5" width="17" height="15.5" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/></g></symbol>
+    <symbol id="icon-chat" viewBox="0 0 24 24"><path d="M4 5.5A1.5 1.5 0 0 1 5.5 4h13A1.5 1.5 0 0 1 20 5.5v10a1.5 1.5 0 0 1-1.5 1.5H9l-5 4z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></symbol>
+    <symbol id="icon-card" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2.5" y="5" width="19" height="14" rx="2.5"/><path d="M2.5 10h19M6.5 15h3"/></g></symbol>
+    <symbol id="icon-gear" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6" stroke-linecap="round"/><circle cx="12" cy="12" r="6.5"/></g></symbol>
+    <symbol id="icon-more-vertical" viewBox="0 0 24 24"><g fill="currentColor"><circle cx="12" cy="5" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="19" r="2"/></g></symbol>
+    <symbol id="icon-more-horizontal" viewBox="0 0 24 24"><g fill="currentColor"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></g></symbol>
+    <symbol id="icon-search" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5"/></g></symbol>
+    <symbol id="icon-chevron-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="icon-arrow-up" viewBox="0 0 10 6"><path d="M5 0 10 6H0z" fill="currentColor"/></symbol>
+    <symbol id="icon-arrow-down" viewBox="0 0 10 6"><path d="M5 6 0 0h10z" fill="currentColor"/></symbol>
+    <symbol id="icon-download" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7.5 10.5 12 15l4.5-4.5M4.5 19.5h15"/></g></symbol>
+    <symbol id="icon-female" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="9" r="5"/><path d="M12 14v7M9 18h6"/></g></symbol>
+    <symbol id="icon-male" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="10" cy="14" r="5"/><path d="M13.5 10.5 20 4M15 4h5v5"/></g></symbol>
+    <symbol id="icon-phone" viewBox="0 0 24 24"><path d="M6.6 3.5h3l1.5 4.2-2 1.4a11 11 0 0 0 5.8 5.8l1.4-2 4.2 1.5v3a2 2 0 0 1-2.2 2A16.5 16.5 0 0 1 4.6 5.7a2 2 0 0 1 2-2.2z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></symbol>
+    <symbol id="icon-shield" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 4.5 6v5.5c0 4.5 3.2 8.2 7.5 9.5 4.3-1.3 7.5-5 7.5-9.5V6z"/><path d="m8.8 12 2.2 2.2 4.2-4.4"/></g></symbol>
+    <!-- Vital sign illustrations -->
+    <symbol id="icon-lungs" viewBox="0 0 48 48"><g fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"><path d="M24 8v14m0 0-5 4m5-4 5 4" stroke="#072635"/><path d="M17.5 16c-5 1-9.5 9-9.5 17 0 4 2 6 5 6s6.5-2 6.5-6V19c0-2-.8-3.3-2-3z" fill="#E66FD2" stroke="#072635"/><path d="M30.5 16c5 1 9.5 9 9.5 17 0 4-2 6-5 6s-6.5-2-6.5-6V19c0-2 .8-3.3 2-3z" fill="#E66FD2" stroke="#072635"/></g></symbol>
+    <symbol id="icon-thermometer" viewBox="0 0 48 48"><g stroke="#072635" stroke-width="2.5" stroke-linecap="round"><path d="M20 10a4 4 0 0 1 8 0v18.5a8 8 0 1 1-8 0z" fill="#fff"/><circle cx="24" cy="34.5" r="4.2" fill="#F25C5C" stroke="none"/><path d="M24 33V18" stroke="#F25C5C" stroke-width="3"/><path d="M31 14h4M31 19h4M31 24h4" stroke-width="2"/></g></symbol>
+    <symbol id="icon-heart" viewBox="0 0 48 48"><path d="M24 40S7 30.2 7 18.8A9.3 9.3 0 0 1 24 13.6a9.3 9.3 0 0 1 17 5.2C41 30.2 24 40 24 40z" fill="#F25C8A" stroke="#072635" stroke-width="2.5" stroke-linejoin="round"/><path d="M11 24h8l2.5-5 4 10 2.5-5H37" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  </svg>
+
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="topbar">
+    <a class="topbar__logo" href="#" aria-label="Tech.Care home">
+      <img src="assets/logo.svg" alt="Tech.Care" width="211" height="48">
+    </a>
+
+    <nav class="topbar__nav" aria-label="Primary">
+      <ul class="nav-list">
+        <li><a class="nav-link" href="#"><svg class="icon"><use href="#icon-home"/></svg><span>Overview</span></a></li>
+        <li><a class="nav-link is-active" href="#" aria-current="page"><svg class="icon"><use href="#icon-group"/></svg><span>Patients</span></a></li>
+        <li><a class="nav-link" href="#"><svg class="icon"><use href="#icon-calendar"/></svg><span>Schedule</span></a></li>
+        <li><a class="nav-link" href="#"><svg class="icon"><use href="#icon-chat"/></svg><span>Message</span></a></li>
+        <li><a class="nav-link" href="#"><svg class="icon"><use href="#icon-card"/></svg><span>Transactions</span></a></li>
+      </ul>
+    </nav>
+
+    <div class="topbar__user">
+      <div class="doctor">
+        <img class="doctor__avatar" src="assets/doctor.svg" alt="" width="44" height="44">
+        <div class="doctor__text">
+          <p class="doctor__name">Dr. Jose Simmons</p>
+          <p class="doctor__role">General Practitioner</p>
+        </div>
+      </div>
+      <span class="topbar__divider" aria-hidden="true"></span>
+      <button class="icon-btn" type="button" aria-label="Settings"><svg class="icon"><use href="#icon-gear"/></svg></button>
+      <button class="icon-btn" type="button" aria-label="More options"><svg class="icon icon--sm"><use href="#icon-more-vertical"/></svg></button>
+    </div>
+  </header>
+
+  <main id="main" class="dashboard" aria-busy="true">
+    <!-- Patients list -->
+    <aside class="card patients" aria-labelledby="patients-title">
+      <div class="card__header patients__header">
+        <h2 id="patients-title" class="card__title">Patients</h2>
+        <button class="icon-btn" type="button" aria-label="Search patients"><svg class="icon"><use href="#icon-search"/></svg></button>
+      </div>
+      <ul class="patients__list" data-slot="patient-list">
+        <li class="skeleton-row"></li><li class="skeleton-row"></li><li class="skeleton-row"></li>
+      </ul>
+    </aside>
+
+    <!-- Diagnosis history + diagnostic list -->
+    <section class="dashboard__main">
+      <article class="card" aria-labelledby="history-title">
+        <h2 id="history-title" class="card__title">Diagnosis History</h2>
+
+        <div class="bp-panel">
+          <div class="bp-panel__chart">
+            <div class="bp-panel__head">
+              <h3 class="bp-panel__title">Blood Pressure</h3>
+              <span class="bp-panel__range">Last 6 months <svg class="icon icon--sm"><use href="#icon-chevron-down"/></svg></span>
+            </div>
+            <div class="bp-panel__canvas">
+              <canvas id="bp-chart" role="img" aria-label="Line chart of systolic and diastolic blood pressure over the last six months"></canvas>
+            </div>
+          </div>
+
+          <dl class="bp-panel__legend" data-slot="bp-legend"></dl>
+        </div>
+
+        <ul class="vitals" data-slot="vitals"></ul>
+      </article>
+
+      <article class="card diagnostics" aria-labelledby="diagnostic-title">
+        <h2 id="diagnostic-title" class="card__title">Diagnostic List</h2>
+        <div class="diagnostics__scroll">
+          <table class="diagnostics__table">
+            <thead>
+              <tr><th scope="col">Problem/Diagnosis</th><th scope="col">Description</th><th scope="col">Status</th></tr>
+            </thead>
+            <tbody data-slot="diagnostic-list"></tbody>
+          </table>
+        </div>
+      </article>
+    </section>
+
+    <!-- Profile + lab results -->
+    <section class="dashboard__side">
+      <article class="card profile" aria-label="Patient profile" data-slot="profile"></article>
+
+      <article class="card labs" aria-labelledby="labs-title">
+        <h2 id="labs-title" class="card__title">Lab Results</h2>
+        <ul class="labs__list" data-slot="lab-results"></ul>
+      </article>
+    </section>
+  </main>
+
+  <div class="toast" role="alert" hidden data-slot="error"></div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js" defer></script>
+  <script src="js/utils.js" defer></script>
+  <script src="js/api.js" defer></script>
+  <script src="js/blood-pressure-chart.js" defer></script>
+  <script src="js/render.js" defer></script>
+  <script src="js/app.js" defer></script>
+</body>
+</html>
