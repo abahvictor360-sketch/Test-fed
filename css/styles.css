@@ -447,7 +447,18 @@ button {
 
 .empty { padding: 16px 20px; color: var(--color-muted); }
 
+.noscript {
+  margin: var(--gutter);
+  padding: 12px 20px;
+  border-radius: var(--radius-sm);
+  background: var(--color-temperature);
+  font-weight: 600;
+}
+
 .toast {
+  display: flex;
+  align-items: center;
+  gap: 16px;
   position: fixed;
   left: 50%;
   bottom: 24px;
@@ -459,6 +470,16 @@ button {
   color: var(--color-surface);
   font-weight: 600;
   box-shadow: 0 8px 24px rgba(7, 38, 53, .2);
+}
+.toast[hidden] { display: none; }
+
+.toast__action {
+  flex-shrink: 0;
+  padding: 6px 14px;
+  border-radius: var(--radius-pill);
+  font-weight: 700;
+  color: var(--color-ink);
+  background: var(--color-accent);
 }
 
 @media (prefers-reduced-motion: reduce) {

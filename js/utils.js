@@ -11,13 +11,19 @@
     return String(value ?? '').replace(/[&<>"']/g, (char) => HTML_ESCAPES[char]);
   }
 
-  /** "08/23/1996" -> "August 23, 1996". Falls back to the raw value if it can't be parsed. */
+  /** Page locale (from <html lang>), used for all date formatting. */
+  const LOCALE = document.documentElement.lang || 'en';
+
+  /**
+   * "08/23/1996" (the API's MM/DD/YYYY format) -> "August 23, 1996" in the page locale.
+   * Falls back to the raw value if it can't be parsed.
+   */
   function formatDate(value) {
     const match = /^(\d{1,2})\/(\d{1,2})\/(\d{4})$/.exec(value || '');
     if (!match) return value || '';
 
     const [, month, day, year] = match.map(Number);
-    return new Date(year, month - 1, day).toLocaleDateString('en-US', {
+    return new Date(year, month - 1, day).toLocaleDateString(LOCALE, {
       month: 'long',
       day: 'numeric',
       year: 'numeric',

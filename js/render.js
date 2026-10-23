@@ -6,6 +6,7 @@
   'use strict';
 
   const { escapeHtml, formatDate, levelMarkup } = TechCare.utils;
+  const { fallbackAttrs, attachFallbacks } = TechCare.images;
 
   const slot = (name) => document.querySelector(`[data-slot="${name}"]`);
 
@@ -14,7 +15,7 @@
       const isActive = patient.name === activeName;
       return `
         <li class="patient${isActive ? ' is-active' : ''}"${isActive ? ' aria-current="true"' : ''}>
-          <img class="patient__avatar" src="${escapeHtml(patient.profile_picture)}" alt="" width="48" height="48" loading="lazy">
+          <img class="patient__avatar" src="${escapeHtml(patient.profile_picture)}" ${fallbackAttrs(patient)} alt="" width="48" height="48" loading="lazy">
           <div class="patient__info">
             <p class="patient__name">${escapeHtml(patient.name)}</p>
             <p class="patient__meta">${escapeHtml(patient.gender)}, ${escapeHtml(patient.age)}</p>
@@ -24,6 +25,8 @@
           </button>
         </li>`;
     }).join('');
+
+    attachFallbacks(slot('patient-list'));
   }
 
   function bloodPressureLegend(latest) {
@@ -79,7 +82,7 @@
     ];
 
     slot('profile').innerHTML = `
-      <img class="profile__photo" src="${escapeHtml(patient.profile_picture)}" alt="Photo of ${escapeHtml(patient.name)}" width="200" height="200">
+      <img class="profile__photo" src="${escapeHtml(patient.profile_picture)}" ${fallbackAttrs(patient)} alt="Photo of ${escapeHtml(patient.name)}" width="200" height="200">
       <h2 class="profile__name">${escapeHtml(patient.name)}</h2>
       <dl class="profile__details">
         ${rows.map(({ icon, label, value }) => `
@@ -92,6 +95,8 @@
           </div>`).join('')}
       </dl>
       <button class="btn" type="button">Show All Information</button>`;
+
+    attachFallbacks(slot('profile'));
   }
 
   function labResults(results) {
@@ -106,9 +111,23 @@
       : '<li class="empty">No lab results available.</li>';
   }
 
-  function error(message) {
+  /** Shows an error message with a retry action. */
+  function error(message, onRetry) {
     const toast = slot('error');
-    toast.textContent = message;
+    toast.innerHTML = `<span>${escapeHtml(message)}</span>`;
+
+    if (onRetry) {
+      const retry = document.createElement('button');
+      retry.type = 'button';
+      retry.className = 'toast__action';
+      retry.textContent = 'Retry';
+      retry.addEventListener('click', () => {
+        toast.hidden = true;
+        onRetry();
+      });
+      toast.append(retry);
+    }
+
     toast.hidden = false;
   }
 

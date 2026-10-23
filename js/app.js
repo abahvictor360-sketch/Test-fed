@@ -8,6 +8,7 @@
 
   async function init() {
     const main = document.getElementById('main');
+    main.setAttribute('aria-busy', 'true');
 
     try {
       const patients = await TechCare.api.fetchPatients();
@@ -32,7 +33,7 @@
       }
     } catch (err) {
       console.error(err);
-      TechCare.render.error('Unable to load patient data. Please try again later.');
+      TechCare.render.error('Unable to load patient data. Please check your connection and try again.', init);
     } finally {
       main.setAttribute('aria-busy', 'false');
     }
